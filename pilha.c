@@ -17,29 +17,32 @@ pilha_t * cria_pilha() {
 
 void push(void* dado, pilha_t* pilha) {
 	no_t* no = cria_no(dado);
-	liga_nos(no,pilha->topo);
+	if(vazia(pilha) == 0)
+		desliga_no(no);
+	else
+		liga_nos(no,pilha->topo);
 	pilha->topo = no;
 	pilha->tamanho++;
-	printf("pilha.c : push() ---> novo tamanho: %d\n",pilha->tamanho);
+	printf("pilha.c : push() ---> no:%p\tdado:%p\tnovo tamanho: %d\n",no,dado,pilha->tamanho);
 }
 
 void * pop(pilha_t* pilha) {
-	if(vazia(pilha)) {
-		fprintf(stderr,"pilha.c : ERR :: pop() em pilha vazia\n");
+	if(vazia(pilha) == 0) {
+		fprintf(stderr,"pilha.c : ERR :: pop() em pilha vazia %d\n",vazia(pilha));
 		exit(EXIT_FAILURE);
 	}
 	no_t* no = pilha->topo;
 	pilha->topo = obtem_proximo(no);
 	void* dado = obtem_dado(no);
 	pilha->tamanho--;
+	printf("pilha.c : pop() ---> no:%p\tdado:%p\tnovo tamanho: %d\n",no,dado,pilha->tamanho);
 	free(no);
-	printf("pilha.c : pop() ---> novo tamanho: %d\n",pilha->tamanho);
 	return dado;
 }
 
 void * topo(pilha_t* pilha) {
-	if(vazia(pilha)) {
-		fprintf(stderr,"pilha.c : ERR :: topo() em pilha vazia\n");
+	if(vazia(pilha) == 0) {
+		fprintf(stderr,"pilha.c : ERR :: topo() em pilha vazia %d\n",vazia(pilha));
 		exit(EXIT_FAILURE);
 	}
 	return obtem_dado(pilha->topo);
@@ -50,6 +53,9 @@ int tamanho(pilha_t* pilha) {
 }
 
 int vazia(pilha_t* pilha) {
-	return pilha->tamanho > 0 ? 1 : 0;
+	if(tamanho(pilha))
+		return 1;
+	else
+		return 0;
 }
 
