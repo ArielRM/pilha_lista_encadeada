@@ -10,6 +10,10 @@ struct pilhas {
 
 pilha_t * cria_pilha() {
 	pilha_t* pilha = (pilha_t*) malloc(sizeof(pilha_t));
+	if(pilha == NULL) {
+		fputs("pilha.c : ERR :: cria_pilha() sem espaço");
+		exit(EXIT_FAILURE);
+	}
 	pilha->topo = NULL;
 	pilha->tamanho = 0;
 	return pilha;
